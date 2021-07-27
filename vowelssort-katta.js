@@ -8,8 +8,8 @@ str2 = "it's okay, but very breezy"
 When the strings are sorted, str1 will be first as its longest sub-string of contiguous vowels "eau" is of length 3, while str2
  has as its longest sub-string of contiguous vowels "ee", which is of length 2.
 
-If two or more strings in the array have maximum sub-strings of the same length, then the strings should remain in the order 
-in which they were found in the orginal array.
+If two or more strings in the array have maximum sub-strings of the same length, then the strings
+should remain in the order in which they were found in the orginal array.
 
 */
 // ---------------------------------test cases----------------
@@ -95,6 +95,80 @@ output = ["eee", "ai", "ou"]
 
 // --------------------------------------------------------------------------------
 
+function sortonAppliedWeights(sourcearray, weightsarray) {
+  /*
+This function will sort an array based on the elements weight provided in the weightsarray.
+Input: sourcearray-[], weightsarray-[].
+output:sortedarray[].
+
+program logic:
+0- weight element for every element in the sourcearray is a MUST.
+1-create a new array (objarray)of objects clubbing sourcearray element and weightsarray element.
+  obj={name:sourcearray[e],
+       value:weightsarray[e]}.
+
+2-sort objarray based on obj.value - descending.
+3- create Results array -Results.push(obj.name)from the obj array.
+
+*/
+  // ---------------------------
+  function createobjarray() {
+    let res = [];
+    for (let i = 0; i <= sourcearray.length - 1; i++) {
+      let obj = {};
+      obj.name = sourcearray[i];
+      obj.value = weightsarray[i];
+      res.push(obj);
+    }
+    console.log(res);
+    return res;
+  }
+  // ---------------------------
+  function sortobjects(objarray) {
+    /*
+    Input: array of objects.
+    Output:sorted array.
+  This function sorts the given array in descending order based on the property value
+  */
+
+    let sortedObjarray = objarray.sort((a, b) => {
+      return b.value - a.value;
+    });
+    sortedObjarray.forEach((e) => console.log("for each=", e));
+
+    return sortedObjarray;
+  }
+
+  // ----------------------------------------------------
+  function getarrayfromobjectarray(sortedobjarray) {
+    /* 
+    This function creates an plain array of simple elements from an array of objects after sorting
+    them in descending order of value.
+
+    Input: array of objects-[{name:"B",value:2},{name:"A",value:1}]
+    Output:[A,B]
+
+    */
+    let plainarray = [];
+    sortedobjarray.forEach((e) => {
+      return plainarray.push(e.name);
+    });
+    return plainarray;
+  }
+  // ----------------------------------------------------
+
+  let res = createobjarray();
+  // console.log("obj array=", res);
+  let sortedres = sortobjects(res);
+  // console.log("sorted obj array=", sortedres);
+
+  let plainarrayres = getarrayfromobjectarray(sortedres);
+  console.log("sorted array=", plainarrayres);
+  return plainarrayres;
+  // ------------End of function sortonAppliedWeights(sourcearray, weightsarray)-----------------
+}
+//---------------------------------------------------------------------------------
+
 function vowelweights(arraystr) {
   /* --------------------------------------------------------------------------------
    this function will return vowel weights appended to each character in the string
@@ -104,10 +178,10 @@ function vowelweights(arraystr) {
 
   ----------------------------------------------------------------------------------*/
   vowelweight = {
-    a: 5,
-    e: 4,
-    i: 3,
-    o: 2,
+    a: 1,
+    e: 1,
+    i: 1,
+    o: 1,
     u: 1,
   };
 
@@ -203,12 +277,14 @@ function sortStringsByVowels(strings) {
   console.log(strings);
 
   let vowelsequencearray = getVowelSequence(strings);
-  let maxarray = [];
 
   console.log("length=", vowelsequencearray.length);
   console.log("vowelsequence");
   console.log(vowelsequencearray);
 
+  // results = sortbasedonweight(strings, weightsarray);
+
+  let maxarray = [];
   function getMaxnumber(vowelsequence) {
     vowelsequence.forEach((e) => {
       let max = Math.max(...vowelweights(e));
@@ -219,12 +295,15 @@ function sortStringsByVowels(strings) {
   let weightsarray = getMaxnumber(vowelsequencearray);
   console.log("weights array");
   console.log(weightsarray);
-  results = sortbasedonweight(strings, weightsarray);
+  // results = sortbasedonweight(strings, weightsarray); old sort method
+  results = sortonAppliedWeights(strings, weightsarray);
   console.log(results);
-
   return results;
 }
 
-// let str = ["every","bataux","is","waaaay","loose"];
-let strings = ["none", "uuu", "Yuuuge!!"];
-sortStringsByVowels(strings);
+// let strings = ["high","day","boot"];
+let strings = ["how about now","a beautiful trio of"];
+
+let grandresult = sortStringsByVowels(strings);
+console.log("FINAL======");
+console.log(grandresult);
